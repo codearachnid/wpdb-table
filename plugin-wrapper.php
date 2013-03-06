@@ -40,7 +40,13 @@ require_once 'wp-db-table-demo.php';
  */
 function wpdb_table() {
 	if( class_exists( 'wpdb_table_demo' ) ) {
-		// activate the demo	
+		// activate the demo
+		global $wpdb;
+		// $wpdb = new wpdb_table( DB_USER, DB_PASSWORD, DB_NAME, DB_HOST );
+		global $wpdb_table;
+		$wpdb_table = new wpdb_table( DB_USER, DB_PASSWORD, DB_NAME, DB_HOST );
+		$wpdb_table->use_table('test_table');
+		// print_r($wpdb);
 	}
 }
-add_action( 'plugins_loaded', 'wpdb_table', 1 ); // high priority so that it's not too late for addon overrides
+add_action( 'init', 'wpdb_table', 1 ); // high priority so that it's not too late for addon overrides
