@@ -31,22 +31,27 @@ if ( !defined( 'ABSPATH' ) )
  *  Include required files to get this show on the road
  */
 require_once 'wp-db-table.php';
-require_once 'wp-db-table-demo.php';
 
 /**
  * Add action 'plugins_loaded' to instantiate main class.
  *
  * @return void
  */
-function wpdb_table() {
-	if( class_exists( 'wpdb_table_demo' ) ) {
-		// activate the demo
-		global $wpdb;
-		// $wpdb = new wpdb_table( DB_USER, DB_PASSWORD, DB_NAME, DB_HOST );
-		global $wpdb_table;
-		$wpdb_table = new wpdb_table( DB_USER, DB_PASSWORD, DB_NAME, DB_HOST );
-		$wpdb_table->use_table('test_table');
-		// print_r($wpdb);
+function wpdb_demo_table() {
+	global $wpdb_table;
+
+	// activate the demo
+	$wpdb_table->create('table_demo', 'id mediumint(9) NOT NULL AUTO_INCREMENT,
+									   time datetime DEFAULT "0000-00-00 00:00:00" NOT NULL,
+									   UNIQUE KEY id (id)' );
+}
+function wpdb_demo_check(){
+	global $wpdb;
+	if( WP_DEBUG ) {
+		echo '<pre>';
+		print_r($wpdb);
+		echo '</pre>';
 	}
 }
-add_action( 'init', 'wpdb_table', 1 ); // high priority so that it's not too late for addon overrides
+add_action( 'init', 'wpdb_demo_table', 1 ); // high priority so that it's not too late for addon overrides
+add_action( 'wp_footer', 'wpdb_demo_check' );
