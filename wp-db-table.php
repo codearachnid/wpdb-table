@@ -28,7 +28,7 @@ class wpdb_table {
 		if( !function_exists('dbDelta') )
 			require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );
 
-		if( !empty($fields) && $table_name = $this->use_table( $table, $prefix, $global ) ) {
+		if( !empty($fields) && $table_name = $this->inject_table( $table, $prefix, $global ) ) {
 
 			// last chance check to make sure we haven't created it before
 			if( $this->table_exists( $table ) )
@@ -51,7 +51,7 @@ class wpdb_table {
 		return !empty( $table_check ) ? true : false;
 	}
 
-	public function use_table( $table, $prefix = true, $global = false ){
+	public function inject_table( $table, $prefix = true, $global = false ){
 		global $wpdb;
 
 		// prevent the risk of initializing the same table twice
